@@ -1,7 +1,7 @@
 <?php
 /*
  * This file is part of FacturaScripts
- * Copyright (C) 2014-2016    Carlos Garcia Gomez        neorazorx@gmail.com
+ * Copyright (C) 2014-2017    Carlos Garcia Gomez        neorazorx@gmail.com
  * Copyright (C) 2014         Francesc Pineda Segarra    shawe.ewahs@gmail.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -191,6 +191,7 @@ class pedido_cliente extends \fs_model
     * 0 -> pendiente. (editable)
     * 1 -> aprobado. (hay un idalbaran y no es editable)
     * 2 -> rechazado. (no hay idalbaran y no es editable)
+    * 3 -> validado parcialmente.
     * @var type 
     */
    public $status;
@@ -286,8 +287,9 @@ class pedido_cliente extends \fs_model
             $this->status = 1;
             $this->editable = FALSE;
          }
-         else if($this->status == 2)
+         else if($this->status >= 2)
          {
+            /// cancelado o validado parcialmente
             $this->editable = FALSE;
          }
          else if($this->editable)
@@ -562,6 +564,12 @@ class pedido_cliente extends \fs_model
       $this->direccion = $this->no_html($this->direccion);
       $this->ciudad = $this->no_html($this->ciudad);
       $this->provincia = $this->no_html($this->provincia);
+      $this->envio_nombre = $this->no_html($this->envio_nombre);
+      $this->envio_apellidos = $this->no_html($this->envio_apellidos);
+      $this->envio_direccion = $this->no_html($this->envio_direccion);
+      $this->envio_ciudad = $this->no_html($this->envio_ciudad);
+      $this->envio_provincia = $this->no_html($this->envio_provincia);
+      $this->numero2 = $this->no_html($this->numero2);
       $this->observaciones = $this->no_html($this->observaciones);
       
       /**
@@ -581,7 +589,7 @@ class pedido_cliente extends \fs_model
       {
          $this->editable = TRUE;
       }
-      else if($this->status == 2)
+      else if($this->status >= 2)
       {
          $this->editable = FALSE;
       }
